@@ -165,14 +165,14 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
-	<distributionManagement>
-    	<repository>
-      		<id>github</id>
-      		<name>GitHub Packages</name>
-      		<url>https://maven.pkg.pl9656300998-ship-it/pl-spring-security-oauth</url>
-    	</repository>
-  </distributionManagement>
+
+  
+  <distributionManagement>
+  <repository>
+    <id>github</id>
+    <url>https://maven.pkg.github.com/pl9656300998-ship-it/pl-spring-security-oauth</url>
+  </repository>
+</distributionManagement>
 
    <!--	<build>
 		<plugins>
