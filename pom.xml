@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.pl</groupId>
 	<artifactId>pl-spring-security</artifactId>
-	<version>0.2</version>
+	<version>0.3</version>
 	<name>pl-spring-security</name>
 	<description>Spring Security Oauth Library</description>
 	<url/>
@@ -34,17 +34,11 @@
   </scm>
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2024.0.1</spring-cloud.version>
 		<org.projectlombok.version>1.18.38</org.projectlombok.version>
 	</properties>
 	
 	<dependencies>
-		<dependency>
-			<groupId>com.sgmc</groupId>
-			<artifactId>sgmcrf-crypto</artifactId>
-			<version>0.1</version>
-		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -60,22 +54,12 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc8</artifactId>
-			<version>21.5.0.0</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		
 		<dependency>
@@ -154,19 +138,7 @@
 		</dependency>
 		
 	</dependencies>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
-  
   <distributionManagement>
   <repository>
     <id>github</id>
@@ -215,7 +187,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.2.1</version>
+        <version>3.2.1</version><!--$NO-MVN-MAN-VER$-->
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -228,7 +200,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.4.1</version>
+        <version>3.4.1</version><!--$NO-MVN-MAN-VER$-->
         <executions>
           <execution>
             <id>attach-javadocs</id>
