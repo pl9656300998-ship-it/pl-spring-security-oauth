@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 import com.pl.security.dto.AuthenticationResponseDTO;
 import com.pl.security.dto.LoginDTO;
-import com.pl.security.dto.ResponseDTO;
+import com.pl.security.dto.ResponseBody;
 import com.pl.security.model.JwtToken;
 import com.pl.security.model.UserMaster;
 import com.pl.security.repo.IJwtTokenRepo;
@@ -43,7 +43,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 	private AuthenticationManager authenticationManager;
 
 	@Override
-	public ResponseEntity<ResponseDTO> login(LoginDTO dto, HttpServletRequest request) throws Exception {
+	public ResponseEntity<ResponseBody> login(LoginDTO dto, HttpServletRequest request) throws Exception {
 		try {
 			expiry = validitySevice.findByTenent(dto.getTenent()).get().getValidity();
 			UserMaster user = userRepo.findByUsername(dto.getUsername()).get();
@@ -70,7 +70,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 						newToken = new JwtToken(token.get().getId(), accessToken, refreshToken, dto.getUsername(), ct,et, ret, true, dto.getTenent());
 					}
 					tokenRepo.save(newToken);
-					return new ResponseEntity<ResponseDTO>(new ResponseDTO(200, true, "Login Success", rdto),
+					return new ResponseEntity<ResponseBody>(new ResponseBody(200, "Login Success", rdto),
 							HttpStatus.OK);
 
 				}
@@ -98,7 +98,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 								et, ret, true, dto.getTenent());
 					}
 					tokenRepo.save(newToken);
-					return new ResponseEntity<ResponseDTO>(new ResponseDTO(200, true, "Login Success", rdto),
+					return new ResponseEntity<ResponseBody>(new ResponseBody(200,"Login Success", rdto),
 							HttpStatus.OK);
 
 				} else {
@@ -124,27 +124,27 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 								et, ret, true, dto.getTenent());
 					}
 					tokenRepo.save(newToken);
-					return new ResponseEntity<ResponseDTO>(new ResponseDTO(200, true, "Login Success", rdto),
+					return new ResponseEntity<ResponseBody>(new ResponseBody(200, "Login Success", rdto),
 							HttpStatus.OK);
 				}
 			
 		} catch (Exception ex) {
 			System.out.println("Error " + ex);
-			return new ResponseEntity<ResponseDTO>(new ResponseDTO(500, false, "Error", ex),
+			return new ResponseEntity<ResponseBody>(new ResponseBody(500,  "Error", ex),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
 
 	@Override
-	public ResponseEntity<ResponseDTO> refreshToken(LoginDTO dto, HttpServletRequest request) throws Exception {
+	public ResponseEntity<ResponseBody> refreshToken(LoginDTO dto, HttpServletRequest request) throws Exception {
 
 		String jwt = dto.getToken();
 
 		Optional<JwtToken> jwtToken = tokenRepo.findByRefreshToken(jwt);
 		String username = jwtToken.get().getUserName();
 		Optional<UserMaster> usermaster = userRepo.findByUsername(username);
-
+		expiry = validitySevice.findByTenent(jwtToken.get().getTenent()).get().getValidity();
 		if (jwtService.isRefreshTokenValid(jwt)) {
 
 			String accessToken = jwtService.generateToken(usermaster.get(),request);
@@ -152,7 +152,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 			AuthenticationResponseDTO rdto = new AuthenticationResponseDTO();
 			rdto.setAccessToken(accessToken);
 			rdto.setRefreshToken(refreshToken);
-			rdto.setUser(usermaster.get());
+			rdto.setValidity(expiry);
 			LocalDateTime ct = LocalDateTime.now();
 			LocalDateTime et = ct.plusSeconds(expiry);
 			LocalDateTime ret = ct.plusSeconds(expiry + 300);
@@ -163,17 +163,17 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 			jwtToken.get().setRefreshExpiresAt(ret);
 			jwtToken.get().setActive(true);
 			tokenRepo.save(jwtToken.get());
-			return new ResponseEntity<ResponseDTO>(new ResponseDTO(200, true, "Token Refresh Success", rdto),
+			return new ResponseEntity<ResponseBody>(new ResponseBody(200,  "Token Refresh Success", rdto),
 					HttpStatus.OK);
 		} else {
-			return new ResponseEntity<ResponseDTO>(new ResponseDTO(401, false, "Token Refresh Failed", "Invalid Token"),
+			return new ResponseEntity<ResponseBody>(new ResponseBody(401,  "Token Refresh Failed", "Invalid Token"),
 					HttpStatus.UNAUTHORIZED);
 		}
 
 	}
 
 	@Override
-	public ResponseEntity<ResponseDTO> logout(String token) throws Exception {
+	public ResponseEntity<ResponseBody> logout(String token) throws Exception {
 		return jwtService.logout(token);
 	}
 

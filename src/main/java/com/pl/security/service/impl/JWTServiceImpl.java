@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import com.pl.security.dto.ResponseDTO;
+import com.pl.security.dto.ResponseBody;
 import com.pl.security.dto.UsermasterDTO;
 import com.pl.security.model.JwtToken;
 import com.pl.security.model.UserMaster;
@@ -141,7 +141,7 @@ public class JWTServiceImpl implements IJWTService {
 	{
 		
 		return tokenRepo.findByRefreshToken(token)
-        .map(tok -> tok.getActive().equals("Y") && tok.getRefreshExpiresAt().isAfter(LocalDateTime.now()))
+        .map(tok -> tok.getActive() && tok.getRefreshExpiresAt().isAfter(LocalDateTime.now()))
         .orElse(false);
 
 	}
@@ -161,7 +161,7 @@ public class JWTServiceImpl implements IJWTService {
 	}
 
 	@Override
-	public ResponseEntity<ResponseDTO> verify(String token) throws SignatureException{
+	public ResponseEntity<ResponseBody> verify(String token) throws SignatureException{
 	
 			String tok = "";
 			if (token.split("\\s++").length == 2) {
@@ -170,30 +170,30 @@ public class JWTServiceImpl implements IJWTService {
 				tok = token;
 			}
 			
-			return new ResponseEntity<>(new ResponseDTO(200, true, "Token Verified",Jwts.parserBuilder().setSigningKey(getSignatureKey()).build().parseClaimsJws(tok).getBody()), HttpStatus.OK);
+			return new ResponseEntity<>(new ResponseBody(200,  "Token Verified",Jwts.parserBuilder().setSigningKey(getSignatureKey()).build().parseClaimsJws(tok).getBody()), HttpStatus.OK);
 
 		
 	}
 
 	@Override
-	public ResponseEntity<ResponseDTO> logout(String token) throws Exception{
+	public ResponseEntity<ResponseBody> logout(String token) throws Exception{
 		try {
 			String tokenstring = token.split(" ")[1].trim();
 			Optional<JwtToken> jwttoken = tokenRepo.findByToken(tokenstring);
 			if(jwttoken.isEmpty())
 			{
-				return new ResponseEntity<>(new ResponseDTO(401,false,"Invalid Token",null),HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>(new ResponseBody(401,"Invalid Token",null),HttpStatus.UNAUTHORIZED);
 			}
 			else
 			{
 				//jwttoken.get().setActive("N");
 				tokenRepo.delete(jwttoken.get());
-				return new ResponseEntity<>(new ResponseDTO(200,true,"Logout Success",null),HttpStatus.OK);	
+				return new ResponseEntity<>(new ResponseBody(200,"Logout Success",null),HttpStatus.OK);	
 			}
 		
 		} catch (Exception e) {
 			
-			return new ResponseEntity<>(new ResponseDTO(401,false,"Invalid Token",null),HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(new ResponseBody(401,"Invalid Token",null),HttpStatus.UNAUTHORIZED);
 		}
 	}
 
@@ -239,7 +239,7 @@ public class JWTServiceImpl implements IJWTService {
 	}
 
 	@Override
-	public ResponseEntity<ResponseDTO> checkToken(String token) {
+	public ResponseEntity<ResponseBody> checkToken(String token) {
 		
 		String jwtToken = "";
 		if (token.split("\\s++").length == 2) {
@@ -249,19 +249,19 @@ public class JWTServiceImpl implements IJWTService {
 			jwtToken = token;
 		}
 		System.out.println("TOKEN = "+token);
-		Optional<JwtToken> jwttoken = tokenRepo.findByToken(jwtToken);
+		Optional<JwtToken> jwttoken = tokenRepo.findByToken(token);
 		System.out.println("TOKEN OBJ = "+jwttoken.get());
 		Boolean valid = tokenRepo.findByToken(jwtToken)
-		        .map(tok -> tok.getActive().equals("Y") && tok.getExpiresAt().isAfter(LocalDateTime.now()))
+		        .map(tok -> tok.getActive() && tok.getExpiresAt().isAfter(LocalDateTime.now()))
 		        .orElse(false);
 		
 		if(valid)
 		{
-			return new ResponseEntity<>(new ResponseDTO(200,true,"Token is valid",null),HttpStatus.OK);
+			return new ResponseEntity<>(new ResponseBody(200,"Token is valid",null),HttpStatus.OK);
 		}
 		else
 		{
-			return new ResponseEntity<>(new ResponseDTO(401,false,"Invalid Token",null),HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(new ResponseBody(401,"Invalid Token",null),HttpStatus.UNAUTHORIZED);
 		}
 	}
 	
