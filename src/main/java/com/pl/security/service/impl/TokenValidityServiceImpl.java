@@ -16,11 +16,11 @@ public class TokenValidityServiceImpl implements ITokenValidityService {
 	private ITokenValidityRepo repo;
 	@Override
 	public Optional<TokenValidity> findByTenent(Integer tenent) throws Exception {
-		return repo.findByTenent(tenent);
+		return repo.findByTenant(tenent);
 	}
 	@Override
 	public TokenValidity save(TokenValidity tokenValidity) throws Exception {
-		if(repo.findByTenent(tokenValidity.getTenent()).isEmpty())
+		if(repo.findByTenant(tokenValidity.getTenant()).isEmpty())
 		{
 			return repo.save(tokenValidity);
 		}
@@ -32,7 +32,7 @@ public class TokenValidityServiceImpl implements ITokenValidityService {
 	}
 	@Override
 	public TokenValidity update(TokenValidity tokenValidity) throws Exception {
-		Optional<TokenValidity> savedTokenValidity = repo.findByTenent(tokenValidity.getTenent());
+		Optional<TokenValidity> savedTokenValidity = repo.findByTenant(tokenValidity.getTenant());
 		if(savedTokenValidity.isEmpty())
 		{
 			return repo.save(tokenValidity);

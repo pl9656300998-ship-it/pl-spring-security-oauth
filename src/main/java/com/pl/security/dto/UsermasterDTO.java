@@ -29,12 +29,10 @@ public class UsermasterDTO {
 	private String role;
 
 	private Integer roleId;
-	
-	private UUID roleUuid;
 
 	private String staffId;
 	
-	private Integer hospitalId;
+	private Integer tenant;
 	
 	@JsonFormat(pattern = "dd-MM-yyyy | HH:mm:ss",timezone = "Asia/Kolkata")
 	private Timestamp enteredDt;

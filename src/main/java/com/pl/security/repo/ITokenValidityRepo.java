@@ -6,6 +6,6 @@ import com.pl.security.model.TokenValidity;
 
 public interface ITokenValidityRepo extends JpaRepository<TokenValidity, Integer>{
 	
-	public Optional<TokenValidity> findByTenent(Integer tenent);
+	public Optional<TokenValidity> findByTenant(Integer tenant);
 
 }

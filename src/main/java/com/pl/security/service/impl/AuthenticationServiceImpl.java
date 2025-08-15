@@ -45,7 +45,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 	@Override
 	public ResponseEntity<ResponseBody> login(LoginDTO dto, HttpServletRequest request) throws Exception {
 		try {
-			expiry = validitySevice.findByTenent(dto.getTenent()).get().getValidity();
+			expiry = validitySevice.findByTenent(dto.getTenant()).get().getValidity();
 			UserMaster user = userRepo.findByUsername(dto.getUsername()).get();
 			Optional<JwtToken> jwtToken = tokenRepo.findByUserName(dto.getUsername());
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
@@ -65,9 +65,9 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 					LocalDateTime et = ct.plusSeconds(expiry);
 					LocalDateTime ret = ct.plusSeconds(expiry + 300);
 					if (token.isEmpty()) {
-						newToken = new JwtToken(accessToken, refreshToken, dto.getUsername(), ct, et, ret, true,dto.getTenent());
+						newToken = new JwtToken(accessToken, refreshToken, dto.getUsername(), ct, et, ret, true,dto.getTenant());
 					} else {
-						newToken = new JwtToken(token.get().getId(), accessToken, refreshToken, dto.getUsername(), ct,et, ret, true, dto.getTenent());
+						newToken = new JwtToken(token.get().getId(), accessToken, refreshToken, dto.getUsername(), ct,et, ret, true, dto.getTenant());
 					}
 					tokenRepo.save(newToken);
 					return new ResponseEntity<ResponseBody>(new ResponseBody(200, "Login Success", rdto),
@@ -92,10 +92,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 					LocalDateTime ret = ct.plusSeconds(expiry + 300);
 					if (token.isEmpty()) {
 						newToken = new JwtToken(accessToken, refreshToken, dto.getUsername(), ct, et, ret, true,
-								dto.getTenent());
+								dto.getTenant());
 					} else {
 						newToken = new JwtToken(token.get().getId(), accessToken, refreshToken, dto.getUsername(), ct,
-								et, ret, true, dto.getTenent());
+								et, ret, true, dto.getTenant());
 					}
 					tokenRepo.save(newToken);
 					return new ResponseEntity<ResponseBody>(new ResponseBody(200,"Login Success", rdto),
@@ -118,10 +118,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 					LocalDateTime ret = ct.plusSeconds(expiry + 300);
 					if (token.isEmpty()) {
 						newToken = new JwtToken(accessToken, refreshToken, dto.getUsername(), ct, et, ret, true,
-								dto.getTenent());
+								dto.getTenant());
 					} else {
 						newToken = new JwtToken(token.get().getId(), accessToken, refreshToken, dto.getUsername(), ct,
-								et, ret, true, dto.getTenent());
+								et, ret, true, dto.getTenant());
 					}
 					tokenRepo.save(newToken);
 					return new ResponseEntity<ResponseBody>(new ResponseBody(200, "Login Success", rdto),
@@ -144,7 +144,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		Optional<JwtToken> jwtToken = tokenRepo.findByRefreshToken(jwt);
 		String username = jwtToken.get().getUserName();
 		Optional<UserMaster> usermaster = userRepo.findByUsername(username);
-		expiry = validitySevice.findByTenent(jwtToken.get().getTenent()).get().getValidity();
+		expiry = validitySevice.findByTenent(jwtToken.get().getTenant()).get().getValidity();
 		if (jwtService.isRefreshTokenValid(jwt)) {
 
 			String accessToken = jwtService.generateToken(usermaster.get(),request);

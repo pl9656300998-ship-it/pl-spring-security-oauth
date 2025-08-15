@@ -32,8 +32,8 @@ public class JwtToken {
     @Column(name = "username", length = 255)
     private String userName;
     
-    @Column(name = "tenent")
-    private Integer tenent;
+    @Column(name = "tenant")
+    private Integer tenant;
 
     @Column(name = "issued_at", nullable = false)
     private LocalDateTime issuedAt;
@@ -48,7 +48,7 @@ public class JwtToken {
     private Boolean active;
 
 	public JwtToken(String token, String refreshToken, String userName, LocalDateTime issuedAt,
-			LocalDateTime expiresAt, LocalDateTime refreshExpiresAt, Boolean active, Integer tenent) {
+			LocalDateTime expiresAt, LocalDateTime refreshExpiresAt, Boolean active, Integer tenant) {
 		
 		this.token = token;
 		this.refreshToken = refreshToken;
@@ -57,13 +57,13 @@ public class JwtToken {
 		this.expiresAt = expiresAt;
 		this.refreshExpiresAt = refreshExpiresAt;
 		this.active = active;
-		this.tenent = tenent;
+		this.tenant = tenant;
 	}
 
 
 
 	public JwtToken(Integer id, String token, String refreshToken, String userName, LocalDateTime issuedAt,
-			LocalDateTime expiresAt, LocalDateTime refreshExpiresAt, Boolean active, Integer tenent) {
+			LocalDateTime expiresAt, LocalDateTime refreshExpiresAt, Boolean active, Integer tenant) {
 		this.id = id;
 		this.token = token;
 		this.refreshToken = refreshToken;
@@ -72,7 +72,7 @@ public class JwtToken {
 		this.expiresAt = expiresAt;
 		this.refreshExpiresAt = refreshExpiresAt;
 		this.active = active;
-		this.tenent = tenent;
+		this.tenant = tenant;
 	}
 	
 	

@@ -25,8 +25,8 @@ public class TokenValidity {
 	@Column(name = "token_validity", insertable = true,updatable = true)
 	private Integer validity;
 	
-	@Column(name = "tenent", insertable = true,updatable = true)
-	private Integer tenent;
+	@Column(name = "tenant", insertable = true,updatable = true)
+	private Integer tenant;
 	
 	
 }

@@ -32,8 +32,8 @@ public class Role {
 	@Column(name = "role_name", insertable = true,updatable = true)
 	private String roleName;
 	
-	@Column(name = "tenent", insertable = true,updatable = true)
-	private Integer tenent;
+	@Column(name = "tenant", insertable = true,updatable = true)
+	private Integer tenant;
 	
 	@Column(name = "active", insertable = true,updatable = true)
 	private Boolean active;

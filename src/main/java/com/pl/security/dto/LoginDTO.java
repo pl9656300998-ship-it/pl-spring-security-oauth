@@ -22,6 +22,6 @@ public class LoginDTO {
 	
 	private String token;
 	
-	private Integer tenent;
+	private Integer tenant;
 
 }

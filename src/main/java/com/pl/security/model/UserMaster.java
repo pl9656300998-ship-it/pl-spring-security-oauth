@@ -79,8 +79,8 @@ public class UserMaster implements UserDetails{
 	@Column(name = "ACTIVE")
 	private Boolean active;
 	
-	@Column(name = "tenent")
-	private Integer tenent;
+	@Column(name = "tenant")
+	private Integer tenant;
 	
 	@JsonFormat(pattern = "dd-MM-yyyy | HH:mm:ss",timezone = "Asia/Kolkata")
 	@Column(name = "ENTERED_DT")

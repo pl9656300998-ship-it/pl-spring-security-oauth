@@ -45,7 +45,7 @@ public class JWTServiceImpl implements IJWTService {
 		additionalinfo.put("staffId", user.getStaffId());
 		additionalinfo.put("email", user.getEmail());
 		additionalinfo.put("mobile", user.getMobile());
-		additionalinfo.put("tenent", user.getTenent());
+		additionalinfo.put("tenant", user.getTenant());
 		additionalinfo.put("host", request.getRemoteHost());
 		additionalinfo.put("hostIp", request.getRemoteAddr());
 		additionalinfo.put("userAgent", request.getHeader("User-Agent"));
@@ -71,7 +71,7 @@ public class JWTServiceImpl implements IJWTService {
 		additionalinfo.put("staffId", user.getStaffId());
 		additionalinfo.put("email", user.getEmail());
 		additionalinfo.put("mobile", user.getMobile());
-		additionalinfo.put("tenent", user.getTenent());
+		additionalinfo.put("tenant", user.getTenant());
 		additionalinfo.put("host", request.getRemoteHost());
 		additionalinfo.put("hostIp", request.getRemoteAddr());
 		additionalinfo.put("userAgent", request.getHeader("User-Agent"));
@@ -131,7 +131,7 @@ public class JWTServiceImpl implements IJWTService {
 	{
 		
 		return tokenRepo.findByToken(jwtToken)
-        .map(tok -> tok.getActive().equals("Y") && tok.getExpiresAt().isAfter(LocalDateTime.now()))
+        .map(tok -> tok.getActive() && tok.getExpiresAt().isAfter(LocalDateTime.now()))
         .orElse(false);
 
 	}
@@ -227,13 +227,13 @@ public class JWTServiceImpl implements IJWTService {
 		String staffId =  (String) c.get("staffId");
 		String role = (String)c.get("role");
 		Integer roleid = (Integer)c.get("roleId");
-		Integer hospitalId = (Integer)c.get("hospitalId");
+		Integer tenant = (Integer)c.get("tenant");
 		UsermasterDTO responseDto = new UsermasterDTO();
 		responseDto.setUsername(username);
 		responseDto.setStaffId(staffId);
 		responseDto.setRole(role);
 		responseDto.setRoleId(roleid);
-		responseDto.setHospitalId(hospitalId);
+		responseDto.setTenant(tenant);
 		return responseDto;
 
 	}
